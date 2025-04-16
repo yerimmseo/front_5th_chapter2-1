@@ -82,7 +82,7 @@ export const AppState = {
 
     // 화요일 할인
     if (new Date().getDay() === 2) {
-      this.totalAmount *= 1 - 0.1;
+      this.totalAmount *= 0.9;
       discountRate = Math.max(discountRate, 0.1);
     }
 
