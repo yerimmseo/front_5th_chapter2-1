@@ -1,18 +1,20 @@
-import { initializeElements } from './elements';
-import { setupEventListeners, setupPromotions } from './event';
+import App from "./App";
+import { setupEventListeners } from "./event";
+import { setupPromotions } from "./promotion";
 
 const initializeApp = () => {
-  const rootElement = document.getElementById('app');
+  const rootElement = document.getElementById("app");
 
   if (!rootElement) {
-    console.error('Root Element가 없습니다.');
+    console.error("Root Element가 없습니다.");
     return;
   }
 
-  const elements = initializeElements(rootElement);
-
-  setupEventListeners(elements);
+  App(rootElement);
+  setupEventListeners();
   setupPromotions();
 };
 
-document.addEventListener('DOMContentLoaded', initializeApp);
+if (typeof window !== "undefined" && document.getElementById("app")) {
+  initializeApp();
+}
