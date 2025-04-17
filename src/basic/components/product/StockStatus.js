@@ -5,7 +5,6 @@ const StockStatus = () => {
   const container = createElement("div", {
     className: "text-sm text-gray-500 mt-2",
     id: "stock-status",
-    textContent: "",
   });
 
   const updateStatus = () => {

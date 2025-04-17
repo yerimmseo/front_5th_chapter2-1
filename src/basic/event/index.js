@@ -4,7 +4,7 @@ export const setupEventListeners = () => {
   document.addEventListener("click", (e) => {
     const target = e.target;
 
-    if (target && target.matches("#add-to-cart-btn")) {
+    if (target && (target.matches("#add-to-cart") || target.id === "add-to-cart")) {
       const selectedId = document.getElementById("product-select").value;
       const { productList } = stores.product.getState();
       const selectedProduct = productList.find((product) => product.id === selectedId);
