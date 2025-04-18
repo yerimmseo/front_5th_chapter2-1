@@ -26,21 +26,6 @@ const App = (rootElement) => {
 
   container.appendChild(wrapper);
   rootElement.appendChild(container);
-
-  // 상태가 변경되면 ProductSelector를 다시 렌더링
-  stores.product.subscribe(() => {
-    const currentSelectedValue = productSelector.value;
-    const updatedProductSelector = renderProductSelector();
-
-    if (!updatedProductSelector) return;
-
-    productSelector.replaceWith(updatedProductSelector);
-    productSelector = updatedProductSelector;
-
-    if (currentSelectedValue) {
-      productSelector.value = currentSelectedValue;
-    }
-  });
 };
 
 export default App;

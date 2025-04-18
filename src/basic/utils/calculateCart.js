@@ -2,7 +2,7 @@ export const calculateCart = (cartItemList, productList) => {
   let totalAmount = 0;
   let totalItemCount = 0;
   let originalTotalAmount = 0;
-  let discountRate = 0;
+  let bonusPoint = 0;
 
   cartItemList.forEach(({ id, quantity }) => {
     const currentProduct = productList.find((product) => product.id === id);
@@ -31,16 +31,19 @@ export const calculateCart = (cartItemList, productList) => {
     totalAmount += itemTotalAmount * (1 - discount);
   });
 
+  bonusPoint += Math.floor(totalAmount / 1000);
+
   // 대량 구매 할인
+  let discountRate = 0;
   if (totalItemCount >= 30) {
     const bulkDiscountAmount = originalTotalAmount * 0.25;
     const itemDiscountAmount = originalTotalAmount - totalAmount;
 
     if (bulkDiscountAmount > itemDiscountAmount) {
-      totalAmount = originalTotalAmount * 0.75;
+      totalAmount = originalTotalAmount * (1 - 0.25);
       discountRate = 0.25;
     } else {
-      discountRate = itemDiscountAmount / originalTotalAmount;
+      discountRate = (originalTotalAmount - totalAmount) / originalTotalAmount;
     }
   } else {
     discountRate = (originalTotalAmount - totalAmount) / originalTotalAmount;
@@ -48,11 +51,9 @@ export const calculateCart = (cartItemList, productList) => {
 
   // 화요일 할인
   if (new Date().getDay() === 2) {
-    totalAmount *= 0.9;
+    totalAmount *= 1 - 0.1;
     discountRate = Math.max(discountRate, 0.1);
   }
-
-  const bonusPoint = Math.floor(totalAmount / 1000);
 
   return {
     totalPrice: Math.round(totalAmount),

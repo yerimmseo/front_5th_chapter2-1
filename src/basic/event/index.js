@@ -14,16 +14,12 @@ export const setupEventListeners = () => {
         return;
       }
 
-      if (selectedProduct.stock <= 0) {
-        alert("재고가 없습니다.");
-        return;
-      }
-
       const result = stores.product.actions.decreaseStock(selectedId, 1);
       if (!result) {
         alert("재고가 부족합니다.");
         return;
       }
+
       // 장바구니 추가
       stores.cart.actions.addItem(selectedProduct, 1);
       // 마지막 선택 상품 기록
@@ -33,7 +29,7 @@ export const setupEventListeners = () => {
     // 수량 변경 버튼 클릭
     if (target && target.matches(".quantity-change")) {
       const productId = target.dataset.productId;
-      const changeQuantity = Number(target.dataset.changeAmount);
+      const changeQuantity = Number(target.dataset.change);
 
       const { cartItemList } = stores.cart.getState();
       const cartItem = cartItemList.find((item) => item.id === productId);
@@ -44,14 +40,12 @@ export const setupEventListeners = () => {
 
       const newQuantity = cartItem.quantity + changeQuantity;
 
-      if (newQuantity < 0) {
-        alert("수량은 0보다 작을 수 없습니다.");
+      if (newQuantity <= 0) {
+        // alert("수량은 0보다 작을 수 없습니다.");
         return;
       }
 
       // 수량 업데이트
-      stores.cart.actions.updateItemQuantity(productId, newQuantity);
-
       if (changeQuantity > 0) {
         const { productList } = stores.product.getState();
         const product = productList.find((product) => product.id === productId);
@@ -65,6 +59,8 @@ export const setupEventListeners = () => {
       } else {
         stores.product.actions.increaseStock(productId, Math.abs(changeQuantity));
       }
+
+      stores.cart.actions.updateItemQuantity(productId, newQuantity);
     }
 
     // 아이템 삭제 버튼 클릭

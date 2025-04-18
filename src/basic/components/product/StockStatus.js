@@ -17,7 +17,7 @@ const StockStatus = () => {
       }
     });
 
-    container.innerText = stockMessage.trim();
+    container.textContent = stockMessage;
   };
 
   updateStatus();
